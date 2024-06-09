@@ -14,7 +14,12 @@ const userSchema = mongoose.Schema(
     email: {
       type: String,
       unique: true,
+      lowercase: true,
       required: true,
+      match: [
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        "Please enter a valid email address"
+    ]
     },
     password: {
       type: String,
@@ -47,11 +52,11 @@ const userSchema = mongoose.Schema(
     playlistCount: {
       type: Number,
       required: false,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
     }
-
-  },
-  {
-    Timestamp: true,
   }
 );
 
