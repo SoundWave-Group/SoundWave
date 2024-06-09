@@ -2,8 +2,17 @@ const express = require('express');
 require ("dotenv").config();
 const morgan = require('morgan');
 const SpotifyWebApi = require('spotify-web-api-node');
-
 const app = express();
+const bodyParser = require("body-parser");
+const user = require("./models/user.model.js");
+const playlist = require("./models/playlist.model.js");
+const track = require("./models/track.model.js");
+const mongoose = require("mongoose");
+const mongoDB =
+  "mongodb+srv://infynnity:YjxxkPbimflYw5mp@soundwave-db.idlyeka.mongodb.net/soundWaveDB?retryWrites=true&w=majority&appName=soundWave-DB";
+app.use(bodyParser.urlencoded({ extended: false }));
+
+
 const port = process.env.PORT || 3000;
 app.use(morgan('dev'));
 
@@ -74,6 +83,58 @@ app.get('/play', (req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}...`);
-})
+
+
+
+
+
+
+
+
+
+
+
+// CREATE COLLECTION API'S
+
+app.post("/api/users", async (req, res) => {
+    try {
+       const User = await user.create(req.body);
+       res.status(200).json(User)
+    } catch (error) {
+        console.log(error);
+    }
+  });
+
+
+  app.post("/api/playlists", async (req, res) => {
+    try {
+       const Playlist = await playlist.create(req.body);
+       res.status(200).json(Playlist)
+    } catch (error) {
+        console.log(error);
+    }
+  });
+
+  app.post("/api/tracks", async (req, res) => {
+    try {
+       const Track = await track.create(req.body);
+       res.status(200).json(Track)
+    } catch (error) {
+        console.log(error);
+    }
+  });
+
+
+mongoose.connect(mongoDB)
+  .then(() => {
+    console.log("connected");
+
+    app.listen(port, () => {
+        console.log(`Server listening on port ${port}...`);
+    });
+    
+  })
+  .catch((err) => {
+    console.log("failed to connect");
+    console.log(err);
+  });
