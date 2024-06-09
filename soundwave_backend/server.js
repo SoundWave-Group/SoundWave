@@ -3,8 +3,6 @@ require ("dotenv").config();
 const morgan = require('morgan');
 const SpotifyWebApi = require('spotify-web-api-node');
 const app = express();
-
-
 const bodyParser = require("body-parser");
 const user = require("./models/user.model.js");
 const playlist = require("./models/playlist.model.js");
@@ -87,6 +85,44 @@ app.get('/play', (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+// CREATE COLLECTION API'S
+
+app.post("/api/users", async (req, res) => {
+    try {
+       const User = await user.create(req.body);
+       res.status(200).json(User)
+    } catch (error) {
+        console.log(error);
+    }
+  });
+
+
+  app.post("/api/playlists", async (req, res) => {
+    try {
+       const Playlist = await playlist.create(req.body);
+       res.status(200).json(Playlist)
+    } catch (error) {
+        console.log(error);
+    }
+  });
+
+  app.post("/api/tracks", async (req, res) => {
+    try {
+       const Track = await track.create(req.body);
+       res.status(200).json(Track)
+    } catch (error) {
+        console.log(error);
+    }
+  });
 
 
 mongoose.connect(mongoDB)
