@@ -31,7 +31,7 @@ const trackSchema = mongoose.Schema(
         ref: "User",
         required: true,
       },
-    UploadedAt: {
+    uploadedAt: {
         type: Date,
         default: Date.now,
       }
