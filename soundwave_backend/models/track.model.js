@@ -26,13 +26,15 @@ const trackSchema = mongoose.Schema(
       type: Date,
       required: false,
     },
-    user: {
-        type: String,
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
+      },
+    UploadedAt: {
+        type: Date,
+        default: Date.now,
       }
-  },
-  {
-    Timestamp: true,
   }
 );
 

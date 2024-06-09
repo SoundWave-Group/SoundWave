@@ -10,29 +10,19 @@ const playlistSchema = mongoose.Schema(
       type: Number,
       required: false,
     },
-    genre: {
-       type: String,
-       required: false,
-     },
-    playlistArt: {
-      type: String,
-      required: true,
-    },
     tracks: {
       type: Array,
       required: false,
     },
-    description: {
-      type: String,
-      required: false,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    user: {
-        type: String,
-        required: true,
-      }
-  },
-  {
-    Timestamp: true,
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    }
   }
 );
 
