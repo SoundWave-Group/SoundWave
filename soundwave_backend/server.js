@@ -2,6 +2,7 @@ const express = require('express');
 require ("dotenv").config();
 const morgan = require('morgan');
 const SpotifyWebApi = require('spotify-web-api-node');
+const app = express();
 
 
 const bodyParser = require("body-parser");
@@ -14,7 +15,6 @@ const mongoDB =
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-const app = express();
 const port = process.env.PORT || 3000;
 app.use(morgan('dev'));
 
@@ -92,7 +92,7 @@ app.get('/play', (req, res) => {
 mongoose.connect(mongoDB)
   .then(() => {
     console.log("connected");
-    
+
     app.listen(port, () => {
         console.log(`Server listening on port ${port}...`);
     });
