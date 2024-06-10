@@ -8,8 +8,7 @@ const user = require("./models/user.model.js");
 const playlist = require("./models/playlist.model.js");
 const track = require("./models/track.model.js");
 const mongoose = require("mongoose");
-const mongoDB =
-  "mongodb+srv://infynnity:YjxxkPbimflYw5mp@soundwave-db.idlyeka.mongodb.net/soundWaveDB?retryWrites=true&w=majority&appName=soundWave-DB";
+const mongoDB = process.env.STRING
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
