@@ -1,30 +1,23 @@
 const express = require('express');
 require ("dotenv").config();
 const morgan = require('morgan');
-const SpotifyWebApi = require('spotify-web-api-node');
 const app = express();
 const bodyParser = require("body-parser");
 const user = require("./models/user.model.js");
 const playlist = require("./models/playlist.model.js");
 const track = require("./models/track.model.js");
 const mongoose = require("mongoose");
-const mongoDB =
-  "mongodb+srv://infynnity:YjxxkPbimflYw5mp@soundwave-db.idlyeka.mongodb.net/soundWaveDB?retryWrites=true&w=majority&appName=soundWave-DB";
+const mongoDB = process.env.MONGO_URL;
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
 const port = process.env.PORT || 3000;
 app.use(morgan('dev'));
 
-const spotifyApi = new SpotifyWebApi({
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    redirectUri: process.env.R_UR
-});
-
-app.get('/login', (req, res) => {
-    const scopes = ['user-read-private', 'user-read-email', 'user-read-playback-state', 'user-modify-playback-state'];
-    res.redirect(spotifyApi.createAuthorizeURL(scopes));
+app.get('/', async (req, res) => {
+    res.json({
+        message: 'Welcome nigga.'
+    })
 })
 
 app.get('/callback', (req, res) => {
@@ -98,43 +91,42 @@ app.get('/play', (req, res) => {
 
 app.post("/api/users", async (req, res) => {
     try {
-       const User = await user.create(req.body);
-       res.status(200).json(User)
+        const User = await user.create(req.body);
+        res.status(200).json(User)
     } catch (error) {
         console.log(error);
     }
-  });
+});
 
 
-  app.post("/api/playlists", async (req, res) => {
+app.post("/api/playlists", async (req, res) => {
     try {
-       const Playlist = await playlist.create(req.body);
-       res.status(200).json(Playlist)
+        const Playlist = await playlist.create(req.body);
+        res.status(200).json(Playlist)
     } catch (error) {
         console.log(error);
     }
-  });
+});
 
-  app.post("/api/tracks", async (req, res) => {
+app.post("/api/tracks", async (req, res) => {
     try {
-       const Track = await track.create(req.body);
-       res.status(200).json(Track)
+        const Track = await track.create(req.body);
+        res.status(200).json(Track)
     } catch (error) {
         console.log(error);
     }
-  });
+});
 
 
 mongoose.connect(mongoDB)
-  .then(() => {
-    console.log("connected");
+    .then(() => {
+        console.log("connected");
 
-    app.listen(port, () => {
-        console.log(`Server listening on port ${port}...`);
+        app.listen(port, () => {
+            console.log(`Server listening on port ${port}...`);
+        });
+    })
+    .catch((err) => {
+        console.log("failed to connect");
+        console.log(err);
     });
-    
-  })
-  .catch((err) => {
-    console.log("failed to connect");
-    console.log(err);
-  });
