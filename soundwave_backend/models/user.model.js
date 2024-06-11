@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema(
   {
@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema(
       required: true,
       match: [
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        "Please enter a valid email address"
+        'Please enter a valid email address'
     ]
     },
     password: {
@@ -52,6 +52,6 @@ const userSchema = mongoose.Schema(
   }
 );
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
