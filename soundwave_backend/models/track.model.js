@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const trackSchema = mongoose.Schema(
   {
@@ -11,9 +11,9 @@ const trackSchema = mongoose.Schema(
       required: false,
     },
     genre: {
-       type: String,
-       required: false,
-     },
+        type: String,
+        required: false,
+    },
     albumArt: {
       type: String,
       required: true,
@@ -28,7 +28,7 @@ const trackSchema = mongoose.Schema(
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
         required: true,
       },
     uploadedAt: {
@@ -38,6 +38,6 @@ const trackSchema = mongoose.Schema(
   }
 );
 
-const Track = mongoose.model("Track", trackSchema);
+const Track = mongoose.model('Track', trackSchema);
 
 module.exports = Track;

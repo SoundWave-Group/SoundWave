@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const playlistSchema = mongoose.Schema(
   {
@@ -16,7 +16,7 @@ const playlistSchema = mongoose.Schema(
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     createdAt: {
@@ -26,6 +26,6 @@ const playlistSchema = mongoose.Schema(
   }
 );
 
-const Playlist = mongoose.model("Playlist", playlistSchema);
+const Playlist = mongoose.model('Playlist', playlistSchema);
 
 module.exports = Playlist;
