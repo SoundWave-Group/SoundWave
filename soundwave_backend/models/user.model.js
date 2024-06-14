@@ -21,9 +21,13 @@ const userSchema = mongoose.Schema(
         'Please enter a valid email address'
     ]
     },
+    googleId: {
+      type: String,
+      required: false,
+    },
     password: {
       type: String,
-      required: true,
+      required: false,
     },
     profilePicture: {
       type: String,
