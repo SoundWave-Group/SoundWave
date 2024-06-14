@@ -19,11 +19,11 @@ const trackSchema = mongoose.Schema(
       required: true,
     },
     duration: {
-      type: Number,
+      type: String,
       required: false,
     },
     releaseDate: {
-      type: Date,
+      type: Number,
       required: false,
     },
     link: {
