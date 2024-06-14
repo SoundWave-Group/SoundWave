@@ -26,6 +26,9 @@ const trackSchema = mongoose.Schema(
       type: Date,
       required: false,
     },
+    link: {
+      type: String
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
