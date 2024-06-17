@@ -3,26 +3,43 @@ const User = require('../models/user.model');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 require ('dotenv').config();
 
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+    User.findById(id).then((user) => {
+        done(null, user);
+    });
+});
+
 passport.use(
     new GoogleStrategy({
-        callbackURL: '/auth/google/redirect',
-        clientID: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET
-    }, (accessToken, refreshToken, profile, done) => {
-        User.findOne({ email: profile._json.email })
-            .then((currentUser) => {
-                if (currentUser) {
-                    console.log('user already exists:', currentUser);
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: '/auth/google/redirect'
+    }, async (accessToken, refreshToken, profile, done) => {
+        try {
+            let user = await User.findOne({ googleId: profile.id });
+
+            if (!user) {
+                user = await User.findOne({ email: profile._json.email });
+                if (user) {
+                    user.googleId = profile.id;
+                    await user.save();
                 } else {
-                    new User({
+                    user = await User.create({
                         googleId: profile.id,
-                        fullname: profile.displayName,
-                        username: profile._json.given_name,
-                        email: profile._json.email
-                    }).save().then((newUser) => {
-                        console.log('new user created:', newUser);
-                    })
+                        email: profile._json.email,
+                        fullName: profile.displayName
+                    });
                 }
-            })
+            }
+
+            console.log(user);
+            return done(null, user);
+        } catch (error) {
+            return done(error, false);
+        }
     })
 );
