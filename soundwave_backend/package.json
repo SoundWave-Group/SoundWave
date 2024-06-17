@@ -18,6 +18,8 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cookie-session": "^2.1.0",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "firebase": "^10.12.2",
@@ -25,7 +27,7 @@
     "mongodb": "^6.7.0",
     "mongoose": "^8.4.1",
     "morgan": "^1.10.0",
-    "passport": "^0.7.0",
+    "passport": "^0.5.3",
     "passport-google-oauth": "^2.0.0"
   }
 }

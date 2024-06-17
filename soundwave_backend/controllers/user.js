@@ -1,6 +1,18 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 
+exports.getUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        return res.status(200).json({
+            users: users
+        })
+    } catch (error) {
+        console.error(`Error:\n${error}`);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+}
+
 exports.signUp = async (req, res) => {
     try {
         const { fullName, username, email, password, confirmPassword } = req.body;
@@ -59,7 +71,7 @@ exports.login = async (req, res) => {
         if (!match) {
             return res.status(401).json({ message: 'incorrect password' })
         }
-
+console.log(user);
         res.status(200)
             .json({
                 message: 'logged in successfully',
