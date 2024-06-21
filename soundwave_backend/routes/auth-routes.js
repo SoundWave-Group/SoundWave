@@ -14,22 +14,7 @@ const authCheck = (req, res, next) => {
 }
 
 authRouter.post('/signup', signUp);
-authRouter.post('/login', async (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            return res.status(401).json({ message: info.message });
-        }
-        req.logIn(user, (err) => {
-            if (err) {
-                return next(err);
-            }
-            return res.redirect('/');
-        });
-    })(req, res, next);
-});
+authRouter.post('/login', login);
 authRouter.get('/login', (req, res) => {
     res.send('log in page nigga');//sending the login page
 });

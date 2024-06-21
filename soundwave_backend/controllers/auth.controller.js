@@ -49,41 +49,21 @@ exports.signUp = async (req, res) => {
     }
 }
 
-exports.login = async (req, res) => {
-    try {
-        const { username, password } = req.body
-
-        if ( !username || !password ) {
-    		return res.status(400).json({ message: 'please fill all fields' })
-    	}
-
-        const user = await User.findOne({ username });
-
+exports.login = async (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
         if (!user) {
-            return res.status(400).json({ message: 'user not found' })
+            return res.status(401).json({ message: info.message });
         }
-
-        const match = await bcrypt.compare(password, user.password)
-
-        if (!match) {
-            return res.status(401).json({ message: 'incorrect password' })
-        }
-
-        const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12h' });
-
-        console.log(token);
-        res.status(200)
-            .cookie('access_token', token, {
-                httpOnly: true,
-            })
-            .json({
-                message: 'logged in successfully',
-                user: user
-            });
-    } catch (error) {
-        console.log(`Error:\n${error}`)
-		res.status(500).json({ message: 'internal server error' })
-    }
+        req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect('/');
+        });
+    })(req, res, next);
 }
 
 exports.logout = async (req, res) => {
