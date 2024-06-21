@@ -1,6 +1,8 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const passport = require('passport');
+require ('dotenv').config();
 
 exports.signUp = async (req, res) => {
     try {
@@ -30,7 +32,13 @@ exports.signUp = async (req, res) => {
             password: hashedPassword,
         });
 
+        const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12h' })
+        user.token = token;
+
         res.status(200)
+            .cookie('access_token', token, {
+            httpOnly: true,
+            })
             .json({
                 message: 'signed up successfully',
                 user: user
@@ -60,8 +68,14 @@ exports.login = async (req, res) => {
         if (!match) {
             return res.status(401).json({ message: 'incorrect password' })
         }
-        console.log(user);
+
+        const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12h' });
+
+        console.log(token);
         res.status(200)
+            .cookie('access_token', token, {
+                httpOnly: true,
+            })
             .json({
                 message: 'logged in successfully',
                 user: user
@@ -73,6 +87,11 @@ exports.login = async (req, res) => {
 }
 
 exports.logout = async (req, res) => {
-    req.logout();
-    res.send('logged out')
+    try {
+        req.logout();
+        res.status(200).clearCookie('access_token').redirect('/');
+    } catch (error) {
+        console.log(`Error:\n${error}`)
+		res.status(500).json({ success: false, message: 'Error logging out' })
+    }
 }

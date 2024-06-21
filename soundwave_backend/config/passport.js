@@ -1,5 +1,7 @@
 const passport = require('passport');
 const User = require('../models/user.model');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 require ('dotenv').config();
 
@@ -12,6 +14,29 @@ passport.deserializeUser((id, done) => {
         done(null, user);
     });
 });
+
+passport.use(new LocalStrategy({
+        usernameField: 'username',
+        passwordField: 'password'
+    }, async (username, password, done) => {
+        try {
+        const user = await User.findOne({ username: username });
+
+        if (!user) {
+            return done(null, false, { message: 'incorrect email.' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return done(null, false, { message: 'incorrect password.' });
+        }
+
+        return done(null, user);
+        } catch (error) {
+        return done(error);
+        }
+    })
+);
 
 passport.use(
     new GoogleStrategy({

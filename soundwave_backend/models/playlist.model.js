@@ -8,16 +8,16 @@ const playlistSchema = mongoose.Schema(
     },
     trackCount: {
       type: Number,
-      required: false,
     },
-    tracks: {
-      type: Array,
-      required: false,
-    },
+    playlistTracks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Track',
+      },
+    ],
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     createdAt: {
       type: Date,
