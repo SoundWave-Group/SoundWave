@@ -6,20 +6,15 @@ const passport = require('passport');
 const passportSetup = require('./config/passport');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
-const userRouter = require('./routes/user-routes');
-const playlistRouter = require('./routes/playlist.router.js');
-const trackRouter = require('./routes/track.router.js');
-const { authRouter, authCheck } = require('./routes/auth-routes');
+const userRouter = require('./routes/user.router');
+const playlistRouter = require('./routes/playlist.router');
+const trackRouter = require('./routes/track.router');
+const { authRouter, authCheck } = require('./routes/auth.router');
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// routes
-app.use('/api/playlists', playlistRouter)
-app.use('/api/tracks', trackRouter)
-
 
 const port = process.env.PORT || 3000;
 app.use(morgan('dev'));
@@ -32,6 +27,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 connectToDb();
 
+// routes
+app.use('/api/playlists', playlistRouter)
+app.use('/api/tracks', trackRouter)
 app.use('/', userRouter)
 app.use('/auth', authRouter);
 

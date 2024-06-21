@@ -11,7 +11,7 @@ const postTrack = async (req, res) => {
   
   const getAllTracks = async (req, res) => {
     try {
-      const tracks = await Track.find({});
+      const tracks = await Track.find();
       res.status(200).json(tracks);
     } catch (error) {
       res.status(500).json({ message: error.message });
