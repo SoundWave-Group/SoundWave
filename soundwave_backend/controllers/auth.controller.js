@@ -12,10 +12,16 @@ exports.signUp = async (req, res) => {
     		return res.status(400).json({ message: 'please fill all fields' })
     	}
 
-        const existingUser = await User.findOne({ username })
+        const existingUsername = await User.findOne({ username })
+
+    	if (existingUsername) {
+    		return res.status(400).json({ message: 'this username is taken' })
+    	}
+
+        const existingUser= await User.findOne({ email })
 
     	if (existingUser) {
-    		return res.status(400).json({ message: 'user already exists' })
+    		return res.status(400).json({ message: 'this email is taken' })
     	}
 
         if (confirmPassword !== password) {

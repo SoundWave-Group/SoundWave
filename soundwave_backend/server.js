@@ -39,7 +39,7 @@ app.post('/', authCheck, async (req, res) => {
     });
 });
 
-app.post('/', authCheck, async (req, res) => {
+app.get('/', authCheck, async (req, res) => {
     res.json({
         message: 'home page nigga.'
     });
