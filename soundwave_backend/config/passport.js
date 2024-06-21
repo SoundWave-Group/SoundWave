@@ -2,6 +2,7 @@ const passport = require('passport');
 const User = require('../models/user.model');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
+const { generateUsername } = require('./generateUsername');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 require ('dotenv').config();
 
@@ -56,7 +57,8 @@ passport.use(
                     user = await User.create({
                         googleId: profile.id,
                         email: profile._json.email,
-                        fullName: profile.displayName
+                        fullName: profile.displayName,
+                        username: generateUsername()
                     });
                 }
             }
