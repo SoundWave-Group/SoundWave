@@ -8,36 +8,48 @@ const trackSchema = mongoose.Schema(
     },
     artist: {
       type: String,
-      required: false,
+      required: true,
     },
     genre: {
-        type: String,
-        required: false,
+      type: String,
+      enum: [
+        'Hip Hop & Rap',
+        'Pop',
+        'Electronic',
+        'R&B', 'Party',
+        'Chill',
+        'Workout',
+        'Techno',
+        'House',
+        'Feel Good',
+        'At home',
+        'Healing Era',
+        'Study',
+        'Folk',
+        'Indie',
+        'Soul',
+        'Country',
+        'Latin',
+        'Rock'],
     },
     albumArt: {
       type: String,
-      required: true,
     },
     duration: {
-      type: String,
-      required: false,
+      type: Number,
     },
     releaseDate: {
-      type: Number,
-      required: false,
+      type: Date,
+      default: Date.now,
     },
     link: {
       type: String
     },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: false,
-      },
-    uploadedAt: {
-        type: Date,
-        default: Date.now,
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: false
+    },
   }
 );
 

@@ -23,10 +23,6 @@ const userSchema = mongoose.Schema(
         'Please enter a valid email address'
     ]
     },
-    googleId: {
-      type: String,
-      required: false,
-    },
     password: {
       type: String,
     },
@@ -45,6 +41,18 @@ const userSchema = mongoose.Schema(
     followers: {
       type: Number
     },
+    tracks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Track',
+      },
+    ],
+    playlists: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Playlist',
+      },
+    ],
     createdAt: {
       type: Date,
       default: Date.now,
