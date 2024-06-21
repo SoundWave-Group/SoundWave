@@ -1,7 +1,6 @@
 const express = require('express');
 const { getUsers, deleteUser, deleteAllUsers, getUserProfile } = require('../controllers/user.controller');
-const { cookieAuth } = require('../config/cookieAuth');
-const { authCheck } = require('./auth-routes');
+const { authCheck } = require('./auth.router');
 
 const userRouter = express.Router();
 
