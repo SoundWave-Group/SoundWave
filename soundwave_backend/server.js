@@ -30,6 +30,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 connectToDb();
 
+app.use('/', userRouter)
 app.use('/auth', authRouter);
 
 app.get('/', authCheck, async (req, res) => {

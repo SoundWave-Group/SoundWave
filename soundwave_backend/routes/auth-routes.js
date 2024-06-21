@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const { signUp, login, getUsers } = require('../controllers/user');
+const { signUp, login, logout } = require('../controllers/auth');
 
 const authRouter = express.Router();
 
@@ -12,7 +12,6 @@ const authCheck = (req, res, next) => {
     }
 }
 
-authRouter.get('/users', getUsers);
 authRouter.post('/signup', signUp);
 authRouter.post('/login', login);
 authRouter.get('/login', (req, res) => {//sending the login page
@@ -24,9 +23,7 @@ authRouter.get('/google', passport.authenticate('google', {
 authRouter.get('/google/redirect', passport.authenticate('google'), (req, res) => {
     res.redirect('/');
 })
-authRouter.get('/logout', (req, res) => {
-    res.send('logout');
-});
+authRouter.get('/logout', logout);
 
 module.exports = {
     authRouter,
