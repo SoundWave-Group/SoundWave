@@ -3,7 +3,7 @@ require ('dotenv').config();
 const morgan = require('morgan');
 const connectToDb = require('./config/db');
 const passport = require('passport');
-const passportSetup = require('./config/passport');
+const passportSetup = require('./middleware/passport');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const userRouter = require('./routes/user.router');
@@ -31,7 +31,7 @@ connectToDb();
 app.use('/api/playlists', playlistRouter)
 app.use('/api/tracks', trackRouter)
 app.use('/', userRouter)
-app.use('/auth', authRouter);
+app.use('/api/auth', authRouter);
 
 app.post('/', authCheck, async (req, res) => {
     res.json({

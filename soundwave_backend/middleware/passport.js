@@ -24,12 +24,12 @@ passport.use(new LocalStrategy({
         const user = await User.findOne({ username: username });
 
         if (!user) {
-            return done(null, false, { message: 'incorrect email.' });
+            return done(null, false, { message: 'Account not found' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return done(null, false, { message: 'incorrect password.' });
+            return done(null, false, { message: 'Incorrect password.' });
         }
 
         return done(null, user);
@@ -43,7 +43,7 @@ passport.use(
     new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: '/auth/google/redirect'
+        callbackURL: '/api/auth/google/redirect'
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             let user = await User.findOne({ googleId: profile.id });
