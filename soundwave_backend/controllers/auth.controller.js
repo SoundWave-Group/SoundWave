@@ -50,8 +50,8 @@ exports.signUp = async (req, res) => {
                 user: user
             });
     } catch (error) {
-        console.log(`Error:\n${error}`)
-		return res.status(500).json({ message: 'internal server error' })
+        console.log(`Error:\n${error}`);
+		return res.status(500).json({ message: 'internal server error' });
     }
 }
 
@@ -79,5 +79,37 @@ exports.logout = async (req, res) => {
     } catch (error) {
         console.log(`Error:\n${error}`)
 		res.status(500).json({ success: false, message: 'Error logging out' })
+    }
+}
+
+exports.forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        const user = await User.findOne({ email: email });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Account not found' });
+        }
+
+        const secret = process.env.PASSWORD_SECRET + user.password;
+        const token = jwt.sign({ user }, secret, { expiresIn: '20m' });
+        const link = `http://localhost:3000/api/auth/reset-password/${user._id}/${token}`;
+        console.log(link);
+        return res.status(200).json({
+            message: 'A password reset link has beeb set to your email'
+        })
+    } catch (error) {
+        console.log(`Error:\n${error}`)
+		res.status(500).json({ success: false, message: 'Error' })
+    }
+}
+
+exports.resetPassword = async (req, res) => {
+    try {
+        const { id, token } = req.params;
+        
+    } catch (error) {
+        
     }
 }
