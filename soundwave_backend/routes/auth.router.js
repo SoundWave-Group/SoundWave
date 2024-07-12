@@ -7,7 +7,7 @@ const authRouter = express.Router();
 const authCheck = (req, res, next) => {
     if(!req.user) {
         console.log(req.user);
-        res.redirect('/auth/login')
+        res.redirect('/api/auth/login')
     } else {
         next();
     }
@@ -16,7 +16,7 @@ const authCheck = (req, res, next) => {
 authRouter.post('/signup', signUp);
 authRouter.post('/login', login);
 authRouter.get('/login', (req, res) => {
-    res.send('log in page nigga');//sending the login page
+    res.send('log in page');//sending the login page
 });
 authRouter.get('/google', passport.authenticate('google', {
     scope: ['profile', 'email']
