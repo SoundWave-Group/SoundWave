@@ -30,18 +30,18 @@ connectToDb();
 // routes
 app.use('/api/playlists', playlistRouter)
 app.use('/api/tracks', trackRouter)
-app.use('/', userRouter)
+app.use('/api/', userRouter)
 app.use('/api/auth', authRouter);
 
 app.post('/', authCheck, async (req, res) => {
     res.json({
-        message: 'home page nigga.'
+        message: 'home page.'
     });
 });
 
 app.get('/', authCheck, async (req, res) => {
     res.json({
-        message: 'home page nigga.'
+        message: 'home page.'
     });
 });
 
