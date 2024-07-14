@@ -6,9 +6,9 @@ const { cookieAuth } = require('../middleware/cookieAuth');
 const userRouter = express.Router();
 
 userRouter.get('/users', getUsers);
-userRouter.get('/user-profile', cookieAuth, getUserProfile);
-userRouter.post('/user-profile/edit', authCheck, editProfile);
-userRouter.put('/settings/account/password', authCheck, changePassword);
+userRouter.get('/user-profile/:userId', getUserProfile);
+userRouter.put('/user-profile/edit/:userId', editProfile);
+userRouter.put('/settings/account/password', changePassword);
 userRouter.delete('/delete-user/:userId', deleteUser);
 userRouter.delete('/delete-all-users', deleteAllUsers);
 

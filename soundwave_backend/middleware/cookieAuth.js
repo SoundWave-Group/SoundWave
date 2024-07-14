@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
 exports.cookieAuth = (req, res, next) => {
-    console.log(req.cookies);
+    console.log(req.user);
 	if (!req.cookies || !req.cookies.access_token) {
         return res.redirect('/auth/login');
     }
