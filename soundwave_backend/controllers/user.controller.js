@@ -13,9 +13,10 @@ exports.getUsers = async (req, res) => {
 }
 
 exports.getUserProfile = async (req, res) => {
-    const user = req.user.user;
     try {
-        const userProfile = await User.findById( user._id );
+        const { userId } = req.params;
+
+        const userProfile = await User.findById( userId );
 
         if (!userProfile) {
             return res.status(404).json({ message: 'user not found' });
@@ -31,15 +32,16 @@ exports.getUserProfile = async (req, res) => {
 }
 
 exports.editProfile = async (req, res) => {
-    const currentUser = req.user;
     try {
+        const { userId } = req.params;
+
         const { username, location, bio } = req.body;
 
         if ( !username ) {
     		return res.status(400).json({ message: 'Username cannot be blank' });
     	}
 
-        const user = await User.findByIdAndUpdate(currentUser._id, req.body, { new: true });
+        const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
 
         if (!user) {
             return res.status(404).json({
@@ -47,7 +49,9 @@ exports.editProfile = async (req, res) => {
             });
         }
 
-        res.status(200).redirect('/user-profile');
+        res.status(200).json({
+            message: 'updated'
+        });
 
     } catch (error) {
         console.error(`Error: ${error}`);
@@ -58,8 +62,9 @@ exports.editProfile = async (req, res) => {
 }
 
 exports.changePassword = async (req, res) => {
-    const currentUser = req.user;
     try {
+        const { userId } = req.params;
+
         const { password, newPassword, confirmPassword } = req.body;
 
         if ( !password || !newPassword || !confirmPassword ) {
@@ -79,7 +84,7 @@ exports.changePassword = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(confirmPassword, salt);
 
-        const user = await User.findByIdAndUpdate(currentUser._id, { password: hashedPassword }, { new: true });
+        const user = await User.findByIdAndUpdate(userId, { password: hashedPassword }, { new: true });
 
         if (!user) {
             return res.status(404).json({
