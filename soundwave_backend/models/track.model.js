@@ -30,13 +30,14 @@ const trackSchema = mongoose.Schema(
         'Soul',
         'Country',
         'Latin',
-        'Rock'],
+        'Rock'
+      ],
     },
     albumArt: {
       type: String,
     },
     duration: {
-      type: Number,
+      type: String,
     },
     releaseDate: {
       type: Date,
