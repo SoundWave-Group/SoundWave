@@ -16,7 +16,7 @@ exports.getUserProfile = async (req, res) => {
     try {
         const { username } = req.params;
 
-        const userProfile = await User.findById( username );
+        const userProfile = await User.find(username);
 
         if (!userProfile) {
             return res.status(404).json({ message: 'user not found' });
