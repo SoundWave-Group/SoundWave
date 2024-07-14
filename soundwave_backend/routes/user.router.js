@@ -7,7 +7,7 @@ const userRouter = express.Router();
 
 userRouter.get('/users', getUsers);
 userRouter.get('/user-profile/:userId', getUserProfile);
-userRouter.put('/user-profile/edit/:userId', editProfile);
+userRouter.put('/user-profile/edit/:username', editProfile);
 userRouter.put('/settings/account/password', changePassword);
 userRouter.delete('/delete-user/:userId', deleteUser);
 userRouter.delete('/delete-all-users', deleteAllUsers);
