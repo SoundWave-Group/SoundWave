@@ -13,16 +13,16 @@ exports.getUsers = async (req, res) => {
 }
 
 exports.getUserProfile = async (req, res) => {
-    const user = req.user;
+    const user = req.user.user;
     try {
-        const userProfile = await User.findById(user._id);
+        const userProfile = await User.findById( user._id );
 
         if (!userProfile) {
             return res.status(404).json({ message: 'user not found' });
         }
 
         return res.status(200).json({
-            userProfile: userProfile
+            userProfile: userProfile,
         });
     } catch (error) {
         console.error(error);

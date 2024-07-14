@@ -10,6 +10,9 @@ const userRouter = require('./routes/user.router');
 const playlistRouter = require('./routes/playlist.router');
 const trackRouter = require('./routes/track.router');
 const { authRouter, authCheck } = require('./routes/auth.router');
+// const swaggerjsdoc = require('swagger-jsdoc');
+// const swaggerui = require('swagger-ui-express');
+const apiDoc = require('./routes/api_doc');
 
 const app = express();
 
@@ -28,10 +31,17 @@ app.use(passport.session());
 connectToDb();
 
 // routes
-app.use('/api/playlists', playlistRouter)
-app.use('/api/tracks', trackRouter)
-app.use('/api/', userRouter)
+app.use('/api/playlists', playlistRouter);
+app.use('/api/tracks', trackRouter);
+app.use('/api/', userRouter);
 app.use('/api/auth', authRouter);
+
+// const spacs = swaggerjsdoc(userRouter.options);
+// app.use(
+//     '/api/docs',
+//     swaggerui.serve,
+//     swaggerui.setup(spacs)
+// );
 
 app.post('/', authCheck, async (req, res) => {
     res.json({

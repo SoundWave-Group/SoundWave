@@ -6,9 +6,10 @@ const authRouter = express.Router();
 
 const authCheck = (req, res, next) => {
     if(!req.user) {
-        console.log(req.user);
+        console.log('no user');
         res.redirect('/api/auth/login')
     } else {
+        console.log(req.user);
         next();
     }
 }

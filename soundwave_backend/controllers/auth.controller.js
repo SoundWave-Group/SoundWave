@@ -38,8 +38,7 @@ exports.signUp = async (req, res) => {
             password: hashedPassword,
         });
 
-        const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12h' })
-        user.token = token;
+        const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12h' });
 
         res.status(200)
             .cookie('access_token', token, {
@@ -67,6 +66,7 @@ exports.login = async (req, res, next) => {
             if (err) {
                 return next(err);
             }
+            // const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12h' });
             return res.redirect('/');
         });
     })(req, res, next);
