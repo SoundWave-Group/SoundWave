@@ -33,21 +33,27 @@ exports.getUserProfile = async (req, res) => {
 
 exports.editProfile = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const { usernameParam } = req.params;
+
+        const user = await User.findOne({ username: usernameParam });
+
+        if (!user) {
+            return res.status(404).json({
+                message: 'account not found'
+            });
+        }
 
         const { username, location, bio } = req.body;
 
         if ( !username ) {
-    		return res.status(400).json({ message: 'Username cannot be blank' });
+    		return res.status(400).json({ message: 'username cannot be blank' });
     	}
 
-        const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
+        user.username = username;
+        user.location = location;
+        user.bio = bio;
 
-        if (!user) {
-            return res.status(404).json({
-                message: 'Account not found'
-            });
-        }
+        await user.save();
 
         res.status(200).json({
             message: 'updated'
