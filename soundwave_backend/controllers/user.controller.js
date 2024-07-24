@@ -109,15 +109,15 @@ exports.changePassword = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const username = req.params;
 
-        const user = await User.findOne({ _id: userId });
+        const user = await User.findOne(username);
 
         if (!user) {
-            return res.status(400).json({ message: 'user does not exist' });
+            return res.status(404).json({ message: 'user does not exist' });
         }
 
-        await User.deleteOne({ _id: userId });
+        await User.deleteOne(username);
 
         return res.status(200).json({
             message: 'user deleted'
@@ -133,7 +133,7 @@ exports.deleteAllUsers = async (req, res) => {
         const users = await User.find();
 
         if (!users) {
-            return res.status(400).json({ message: 'there are no users' })
+            return res.status(404).json({ message: 'there are no users' })
         }
 
         await User.deleteMany()

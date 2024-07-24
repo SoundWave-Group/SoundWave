@@ -11,7 +11,7 @@ const createPlaylist = async (req, res) => {
 
     const playlist = await Playlist.create({ playlistTitle});
 
-    res.status(201).json({
+    res.status(200).json({
       playlist: playlist
     });
   } catch (error) {
@@ -23,6 +23,10 @@ const createPlaylist = async (req, res) => {
 const getAllPlaylists = async (req, res) => {
   try {
     const playlists = await Playlist.find();
+
+    if (!playlists) {
+      return res.status(404).json({ message: 'there are no playlists' })
+    }
 
     res.status(200).json({
       playlists: playlists
@@ -47,7 +51,8 @@ const getPlaylist = async (req, res) => {
       trackCount: playlist.tracks.count()
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log(`Error:\n${error}`)
+		return res.status(500).json({ message: 'internal server error' })
   }
 };
 
@@ -66,13 +71,14 @@ const renamePlaylist = async (req, res) => {
       playlist: playlist
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log(`Error:\n${error}`)
+		return res.status(500).json({ message: 'internal server error' })
   }
 };
 
 const addTrackToPlaylist = async (req, res) => {
   try {
-    const { playlistId, trackId } = req.body;
+    const { playlistId, trackId } = req.params;
 
     if (!playlistId || !trackId) {
       return res.status(400).json({ message: 'playlist ID and track ID are required' });
@@ -104,7 +110,7 @@ const addTrackToPlaylist = async (req, res) => {
 
 const removeTrackFromPlaylist = async (req, res) => {
   try {
-    const { playlistId, trackId } = req.body;
+    const { playlistId, trackId } = req.params;
 
     if (!playlistId || !trackId) {
       return res.status(400).json({ message: 'playlist ID and track ID are required' });
@@ -142,7 +148,8 @@ const deletePlaylist = async (req, res) => {
 
     res.status(200).json({ message: 'playlist deleted' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log(`Error:\n${error}`)
+		return res.status(500).json({ message: 'internal server error' })
   }
 };
 
