@@ -140,7 +140,7 @@ const removeTrackFromPlaylist = async (req, res) => {
 const deletePlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
-    const playlist = await Playlist.findByIdAndDelete({ _id: playlistId });
+    const playlist = await Playlist.findByIdAndDelete(playlistId);
 
     if (!playlist) {
       return res.status(404).json({ message: 'playlist not found' });

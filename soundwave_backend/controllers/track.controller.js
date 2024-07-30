@@ -1,6 +1,6 @@
 const Track = require("../models/track.model.js")
 
-const postTrack = async (req, res) => {
+const uploadTrack = async (req, res) => {
     try {
       const track = await Track.create(req.body);
       res.status(200).json({
@@ -77,7 +77,7 @@ const postTrack = async (req, res) => {
   };
   
   module.exports = {
-    postTrack,
+    uploadTrack,
     getAllTracks,
     getTrack,
     updateTrack,
