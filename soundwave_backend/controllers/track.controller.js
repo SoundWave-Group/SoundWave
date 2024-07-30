@@ -1,10 +1,9 @@
-const Track = require("../models/track.model.js")
+const Track = require('../models/track.model.js');
 
 const uploadTrack = async (req, res) => {
     try {
-      const track = await Track.create(req.body);
       res.status(200).json({
-        message: "track added"
+        message: 'track uploaded'
       });
     } catch (error) {
       console.log(`Error:\n${error}`)
@@ -35,7 +34,7 @@ const uploadTrack = async (req, res) => {
       const track = await Track.findById(id);
   
       if (!track) {
-        return res.status(404).json({ message: "track not found" });
+        return res.status(404).json({ message: 'track not found' });
       }
       res.status(200).json({
         trackBody: track
@@ -52,9 +51,9 @@ const uploadTrack = async (req, res) => {
       const track = await Track.findByIdAndUpdate(id, req.body);
   
       if (!track) {
-        return res.status(404).json({ message: "track not found" });
+        return res.status(404).json({ message: 'track not found' });
       }
-      res.status(200).json({ message: "track updated" });
+      res.status(200).json({ message: 'track updated' });
     } catch (error) {
       console.log(`Error:\n${error}`)
 		  return res.status(500).json({ message: 'internal server error' })
@@ -67,9 +66,9 @@ const uploadTrack = async (req, res) => {
       const track = await Track.findByIdAndDelete(id);
   
       if (!track) {
-        return res.status(404).json({ message: "track not found" });
+        return res.status(404).json({ message: 'track not found' });
       }
-      res.status(200).json({ message: "track deleted" });
+      res.status(200).json({ message: 'track deleted' });
     } catch (error) {
       console.log(`Error:\n${error}`)
 		  return res.status(500).json({ message: 'internal server error' })
