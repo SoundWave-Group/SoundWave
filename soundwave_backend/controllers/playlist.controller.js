@@ -6,7 +6,7 @@ const createPlaylist = async (req, res) => {
     const { playlistTitle } = req.body;
 
     if (!playlistTitle) {
-      return res.status(400).json({ message: 'playlist title is required' });
+      return res.status(400).json({ message: 'Playlist title is required' });
     }
 
     const playlist = await Playlist.create({ playlistTitle});
@@ -25,7 +25,7 @@ const getAllPlaylists = async (req, res) => {
     const playlists = await Playlist.find();
 
     if (!playlists) {
-      return res.status(404).json({ message: 'there are no playlists' })
+      return res.status(404).json({ message: 'There are no playlists' })
     }
 
     res.status(200).json({
@@ -39,20 +39,20 @@ const getAllPlaylists = async (req, res) => {
 
 const getPlaylist = async (req, res) => {
   try {
-    const { playlistId } = req.params;
-    const playlist = await Playlist.findById({ _id: playlistId });
+    const { playlistTitle } = req.params;
+    const playlist = await Playlist.findOne({ playlistTitle: playlistTitle });
 
     if (!playlist) {
-      return res.status(404).json({ message: 'playlist not found' });
+      return res.status(404).json({ message: 'Playlist not found' });
     }
 
     res.status(200).json({
       playlist: playlist,
-      trackCount: playlist.tracks.count()
+      trackCount: playlist.tracks.length
     });
   } catch (error) {
-    console.log(`Error:\n${error}`)
-		return res.status(500).json({ message: 'internal server error' })
+    console.log(`Error:\n${error}`);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -61,92 +61,101 @@ const renamePlaylist = async (req, res) => {
     const { playlistId } = req.params;
     const { playlistTitle } = req.body;
 
-    const playlist = await Playlist.findByIdAndUpdate(playlistId,  req.body, { new: true });
+    if (!playlistTitle) {
+      return res.status(400).json({ message: 'Playlist title is required' });
+    }
+
+    const playlist = await Playlist.findByIdAndUpdate(
+      playlistId,
+      { title: playlistTitle },
+      { new: true }
+    );
 
     if (!playlist) {
-      return res.status(404).json({ message: 'playlist not found' });
+      return res.status(404).json({ message: 'Playlist not found' });
     }
 
     res.status(200).json({
-      playlist: playlist
+      playlist: playlist,
+      message: 'Playlist renamed successfully'
     });
   } catch (error) {
-    console.log(`Error:\n${error}`)
-		return res.status(500).json({ message: 'internal server error' })
+    console.log(`Error:\n${error}`);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
 
 const addTrackToPlaylist = async (req, res) => {
   try {
-    const { playlistId, trackId } = req.params;
+    const { playlistTitle, trackId } = req.params;
 
-    if (!playlistId || !trackId) {
-      return res.status(400).json({ message: 'playlist ID and track ID are required' });
+    if (!playlistTitle || !trackId) {
+      return res.status(400).json({ message: 'Playlist title and track ID are required' });
     }
 
-    const playlist = await Playlist.findById(playlistId);
+    const playlist = await Playlist.findOne({ playlistTitle: playlistTitle });
     if (!playlist) {
-      return res.status(404).json({ message: 'playlist not found' });
+      return res.status(404).json({ message: 'Playlist not found' });
     }
 
-    const track = await Track.findById({ _id: trackId });
+    const track = await Track.findById(trackId);
     if (!track) {
-      return res.status(404).json({ message: 'track not found' });
+      return res.status(404).json({ message: 'Track not found' });
     }
 
     if (playlist.tracks.includes(trackId)) {
-      return res.status(400).json({ message: 'track is already in the playlist' });
+      return res.status(400).json({ message: 'Track is already in the playlist' });
     }
 
     playlist.tracks.push(trackId);
     await playlist.save();
 
-    res.status(200).json({ message: 'track added to playlist', playlist });
+    res.status(200).json({ message: 'Track added to playlist', playlist });
   } catch (error) {
     console.error(`Error: ${error.message}`, error);
-    res.status(500).json({ message: 'internal server error' });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
+
 const removeTrackFromPlaylist = async (req, res) => {
   try {
-    const { playlistId, trackId } = req.params;
+    const { playlistTitle, trackId } = req.params;
 
-    if (!playlistId || !trackId) {
-      return res.status(400).json({ message: 'playlist ID and track ID are required' });
+    if (!playlistTitle || !trackId) {
+      return res.status(400).json({ message: 'Playlist title and track ID are required' });
     }
 
-    const playlist = await Playlist.findById({ _id: playlistId });
+    const playlist = await Playlist.findOne({ playlistTitle: playlistTitle });
     if (!playlist) {
-      return res.status(404).json({ message: 'playlist not found' });
+      return res.status(404).json({ message: 'Playlist not found' });
     }
 
-    const track = await Track.findById({ _id: trackId });
+    const track = await Track.findById(trackId);
     if (!track) {
-      return res.status(404).json({ message: 'track not found' });
+      return res.status(404).json({ message: 'Track not found' });
     }
 
     playlist.tracks.pull(trackId);
     await playlist.save();
 
-    res.status(200).json({ message: 'track added to playlist', playlist });
+    res.status(200).json({ message: 'Track removed from playlist', playlist });
   } catch (error) {
     console.error(`Error: ${error.message}`, error);
-    res.status(500).json({ message: 'internal server error' });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-
 const deletePlaylist = async (req, res) => {
   try {
-    const { playlistId } = req.params;
-    const playlist = await Playlist.findByIdAndDelete(playlistId);
+    const { playlistTitle } = req.params;playlistTitle
+    const playlist = await Playlist.findOneAndDelete({ playlistTitle: playlistTitle });
 
     if (!playlist) {
-      return res.status(404).json({ message: 'playlist not found' });
+      return res.status(404).json({ message: 'Playlist not found' });
     }
 
-    res.status(200).json({ message: 'playlist deleted' });
+    res.status(200).json({ message: 'Playlist deleted' });
   } catch (error) {
     console.log(`Error:\n${error}`)
 		return res.status(500).json({ message: 'internal server error' })
