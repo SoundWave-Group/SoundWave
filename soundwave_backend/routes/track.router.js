@@ -1,15 +1,13 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 const {
-  postTrack,
   getAllTracks,
   getTrack,
   updateTrack,
   deleteTrack,
   uploadTrack,
 } = require('../controllers/track.controller.js');
-const multer = require('multer');
-const upload = multer({ dest: './uploads/tracks/' });
+const upload = require('../middleware/multer.js');
 
 router.post('/upload', upload.single('track'), uploadTrack); //upload a track
 router.get('/', getAllTracks); //get all tracks
