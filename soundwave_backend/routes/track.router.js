@@ -6,9 +6,10 @@ const {
   getTrack,
   updateTrack,
   deleteTrack,
+  uploadTrack,
 } = require('../controllers/track.controller.js'); 
 
-router.post('/post', postTrack); //create a track
+router.post('/upload', uploadTrack); //upload a track
 router.get('/', getAllTracks); //get all tracks
 router.get('/:trackId', getTrack); //get a track
 router.put('/update/:trackId', updateTrack); //update a track
