@@ -6,9 +6,6 @@ const playlistSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    trackCount: {
-      type: Number,
-    },
     playlistTracks: [
       {
         type: mongoose.Schema.Types.ObjectId,

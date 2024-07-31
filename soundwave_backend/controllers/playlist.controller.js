@@ -40,7 +40,7 @@ const getAllPlaylists = async (req, res) => {
 const getPlaylist = async (req, res) => {
   try {
     const { playlistTitle } = req.params;
-    const playlist = await Playlist.findOne({ playlistTitle: playlistTitle });
+    const playlist = await Playlist.findOne(playlistTitle);
 
     if (!playlist) {
       return res.status(404).json({ message: 'Playlist not found' });
@@ -48,7 +48,7 @@ const getPlaylist = async (req, res) => {
 
     res.status(200).json({
       playlist: playlist,
-      trackCount: playlist.tracks.length
+      trackCount: playlist.playlistTracks.length
     });
   } catch (error) {
     console.log(`Error:\n${error}`);
@@ -148,8 +148,8 @@ const removeTrackFromPlaylist = async (req, res) => {
 
 const deletePlaylist = async (req, res) => {
   try {
-    const { playlistTitle } = req.params;playlistTitle
-    const playlist = await Playlist.findOneAndDelete({ playlistTitle: playlistTitle });
+    const { playlistTitle } = req.params;
+    const playlist = await Playlist.findOneAndDelete(playlistTitle);
 
     if (!playlist) {
       return res.status(404).json({ message: 'Playlist not found' });
